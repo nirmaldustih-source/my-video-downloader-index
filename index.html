@@ -1,0 +1,277 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="description" content="Download videos, audio, and images from YouTube, Facebook, TikTok, and Instagram for free with SadaSave. High-quality, fast, and secure.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SadaSave - All-in-One Social Media Video Downloader</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{
+background:#0f172a;
+color:white;
+overflow-x:hidden;
+}
+.blob{
+position:fixed;
+border-radius:9999px;
+filter:blur(80px);
+opacity:.25;
+z-index:-1;
+}
+.blob1{width:300px;height:300px;background:#7c3aed;top:0;left:0;}
+.blob2{width:350px;height:350px;background:#06b6d4;bottom:0;right:0;}
+.glass{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,.15);
+}
+.liquid-btn{
+background:linear-gradient(135deg,#7c3aed,#06b6d4);
+transition:.3s;
+}
+.liquid-btn:hover{transform:translateY(-2px) scale(1.03);}
+.tab-active{
+background:linear-gradient(135deg,#7c3aed,#06b6d4);
+}
+</style>
+</head>
+<body>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<nav class="sticky top-0 z-50 glass mx-4 mt-4 rounded-2xl p-4">
+<div class="flex flex-wrap gap-3 justify-between items-center">
+<div class="font-mono font-bold text-3xl">SadaSave.com</div>
+<div class="flex gap-2 flex-wrap">
+<button id="nav-home" class="platform tab-active px-4 py-2 rounded-xl">Home</button>
+<button id="nav-youtube" class="platform px-4 py-2 rounded-xl glass">YouTube</button>
+<button id="nav-facebook" class="platform px-4 py-2 rounded-xl glass">Facebook</button>
+<button id="nav-tiktok" class="platform px-4 py-2 rounded-xl glass">TikTok</button>
+<button id="nav-instagram" class="platform px-4 py-2 rounded-xl glass">Instagram</button>
+</div>
+</div>
+</nav>
+
+<section class="max-w-6xl mx-auto p-6 text-center mt-10">
+<h1 class="text-5xl font-extrabold mb-4">All-in-One Social Media Downloader</h1>
+<p class="text-slate-300 mb-8">Download videos, audio and images from your favorite platforms.</p>
+
+<div class="glass rounded-3xl p-6">
+<input id="urlInput" class="w-full p-4 rounded-xl text-black" placeholder="Paste URL here..." oninput="checkUrlPlatform()">
+<button id="detectBtn" class="liquid-btn mt-4 px-8 py-4 rounded-xl font-bold">Download</button>
+
+<div id="detected" class="mt-4 text-cyan-300"></div>
+</div>
+</section>
+
+<section class="max-w-5xl mx-auto p-6">
+<div class="glass rounded-3xl p-6">
+<h2 class="text-2xl font-bold mb-4">Preview</h2>
+<div class="flex flex-col md:flex-row gap-6 items-center">
+<img id="previewImg" src="https://placehold.co/600x338/png" class="rounded-xl w-full md:w-80">
+<div>
+<h3 id="videoTitle" class="font-bold text-xl">Video Title Preview</h3>
+<p class="text-slate-300">Platform badge and metadata will appear here.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="max-w-5xl mx-auto p-6">
+<div class="glass rounded-3xl p-6">
+<div class="flex gap-3 mb-6">
+<button class="mediaTab tab-active px-4 py-2 rounded-xl" data-tab="mp4">MP4 Video</button>
+<button id="mp3TabBtn" class="mediaTab glass px-4 py-2 rounded-xl" data-tab="mp3">MP3 Audio</button>
+<button class="mediaTab glass px-4 py-2 rounded-xl" data-tab="jpg">JPG</button>
+</div>
+
+<div id="mp4" class="tabContent">
+<div class="grid md:grid-cols-3 gap-4">
+<div class="glass p-4 rounded-xl"><b>1080p</b><br><span class="text-slate-400 text-sm">-- MB</span><br><button class="liquid-btn px-4 py-2 mt-3 rounded-lg">Download</button></div>
+<div class="glass p-4 rounded-xl"><b>720p</b><br><span class="text-slate-400 text-sm">-- MB</span><br><button class="liquid-btn px-4 py-2 mt-3 rounded-lg">Download</button></div>
+<div class="glass p-4 rounded-xl"><b>480p</b><br><span class="text-slate-400 text-sm">-- MB</span><br><button class="liquid-btn px-4 py-2 mt-3 rounded-lg">Download</button></div>
+</div>
+</div>
+
+<div id="mp3" class="tabContent hidden">
+<div class="flex justify-center">
+<div class="glass p-6 rounded-xl text-center max-w-sm w-full">
+<b class="text-lg">Full Quality Audio</b>
+<p class="text-xs text-slate-400 mt-1 mb-4">High Quality Original MP3 Format</p>
+<button class="liquid-btn px-6 py-2 rounded-lg font-bold text-sm w-full">Download MP3</button>
+</div>
+</div>
+</div>
+
+<div id="jpg" class="tabContent hidden">
+<div class="flex justify-center">
+<div class="glass p-6 rounded-xl text-center max-w-sm w-full">
+<b id="jpgTitle">Download Image</b>
+<p id="jpgDesc" class="text-xs text-slate-400 mt-1 mb-4">High Definition Thumbnail Content</p>
+<button class="liquid-btn px-6 py-2 rounded-lg font-bold text-sm w-full">Download JPG</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="max-w-5xl mx-auto p-6">
+<div class="glass rounded-3xl p-10 text-center">
+Advertisement Space
+</div>
+</section>
+
+<footer class="bg-black mt-10 p-10">
+<h2 class="text-3xl font-bold mb-4">Why Choose SadaSave.com?</h2>
+<p class="text-slate-300">
+Experience the ultimate way to grab your favorite content. SadaSave offers lightning-fast downloads from YouTube, Facebook, Instagram, and TikTok with zero quality loss. Simple, secure, and built for speed—your go-to hub for all things media..
+</p>
+</footer>
+
+<script>
+// ⚠️ Render එකෙන් ලැබෙන ඔයාගේ ලින්ක් එක මෙතනට දාන්න මචන් (අගට / දාන්න එපා)
+const RENDER_BACKEND_URL = "https://my-video-downloader-p0ap.onrender.com";
+
+let globalData = null;
+
+function checkUrlPlatform() {
+    const url = document.getElementById("urlInput").value.toLowerCase();
+    let platform = "home";
+
+    if(url.includes("youtube") || url.includes("youtu.be")) platform = "youtube";
+    else if(url.includes("tiktok")) platform = "tiktok";
+    else if(url.includes("facebook") || url.includes("fb.watch")) platform = "facebook";
+    else if(url.includes("instagram")) platform = "instagram";
+
+    document.querySelectorAll(".platform").forEach(btn => {
+        btn.classList.remove("tab-active");
+        btn.classList.add("glass");
+    });
+    
+    const activeNav = document.getElementById("nav-" + platform);
+    if(activeNav) {
+        activeNav.classList.remove("glass");
+        activeNav.classList.add("tab-active");
+    }
+
+    const mp3Btn = document.getElementById("mp3TabBtn");
+    const jpgTitle = document.getElementById("jpgTitle");
+    const jpgDesc = document.getElementById("jpgDesc");
+
+    if(platform === "facebook") {
+        mp3Btn.disabled = true;
+        mp3Btn.style.opacity = "0.3";
+        mp3Btn.style.cursor = "not-allowed";
+        if(mp3Btn.classList.contains("tab-active")) {
+            document.querySelector('[data-tab="mp4"]').click();
+        }
+        jpgTitle.textContent = "Download FB Thumbnail";
+        jpgDesc.textContent = "High Quality Facebook Video Cover";
+    } else {
+        mp3Btn.disabled = false;
+        mp3Btn.style.opacity = "1";
+        mp3Btn.style.cursor = "pointer";
+        if(platform === "youtube") {
+            jpgTitle.textContent = "Download YT Thumbnail";
+            jpgDesc.textContent = "High Quality YouTube Video Cover Image";
+        } else if(platform === "tiktok") {
+            jpgTitle.textContent = "Download TikTok Cover";
+            jpgDesc.textContent = "Original Quality TikTok Profile/Slide Cover";
+        } else {
+            jpgTitle.textContent = "Download Image";
+            jpgDesc.textContent = "High Definition Thumbnail Content";
+        }
+    }
+}
+
+document.getElementById("detectBtn").addEventListener("click", async () => {
+    const urlInput = document.getElementById("urlInput").value;
+    const detectBtn = document.getElementById("detectBtn");
+    const detectedDiv = document.getElementById("detected");
+
+    if(!urlInput) {
+        alert("Please entera valid URL!");
+        return;
+    }
+
+    detectBtn.innerText = "Processing...";
+    detectBtn.disabled = true;
+    detectedDiv.innerHTML = "Fetching real details from video...";
+
+    try {
+        const response = await fetch(`${RENDER_BACKEND_URL}/api/extract`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: urlInput })
+        });
+
+        const data = await response.json();
+        globalData = data;
+
+        if (data.error) {
+            detectedDiv.innerHTML = `<span class="text-red-400">${data.error}</span>`;
+        } else {
+            detectedDiv.innerHTML = `Successfully Detected!`;
+            document.getElementById("videoTitle").textContent = data.title;
+            document.getElementById("previewImg").src = data.thumbnail;
+
+            const mp4Container = document.querySelector("#mp4 .grid");
+            mp4Container.innerHTML = ""; 
+
+            data.formats.forEach(f => {
+                const card = document.createElement("div");
+                card.className = "glass p-4 rounded-xl text-center"; // UI ස්ටයිල් එක අර විදිහමයි
+                
+                const encodedUrl = encodeURIComponent(f.url);
+                const safeTitle = data.title.replace(/[^a-zA-Z0-9]/g, "_");
+                const safeRes = f.resolution.replace(/\s+/g, "_");
+                const downloadProxyUrl = `${RENDER_BACKEND_URL}/api/download?url=${encodedUrl}&filename=${safeTitle}_${safeRes}.mp4`;
+
+                card.innerHTML = `
+                    <b>${f.resolution}</b><br><span class="text-slate-400 text-sm">${f.size}</span><br>
+                    <a href="${downloadProxyUrl}">
+                        <button class="liquid-btn px-4 py-2 mt-3 rounded-lg font-bold text-sm w-full">Download</button>
+                    </a>
+                `;
+                mp4Container.appendChild(card);
+            });
+
+            const jpgContainer = document.querySelector("#jpg .flex");
+            const encodedJpgUrl = encodeURIComponent(data.jpg_url);
+            const safeTitleJPG = data.title.replace(/[^a-zA-Z0-9]/g, "_");
+            const jpgProxyUrl = `${RENDER_BACKEND_URL}/api/download?url=${encodedJpgUrl}&filename=${safeTitleJPG}.jpg`;
+
+            jpgContainer.innerHTML = `
+                <div class="glass p-6 rounded-xl text-center max-w-sm w-full">
+                    <b id="jpgTitle">${document.getElementById("jpgTitle").textContent}</b>
+                    <p id="jpgDesc" class="text-xs text-slate-400 mt-1 mb-4">${document.getElementById("jpgDesc").textContent}</p>
+                    <a href="${jpgProxyUrl}">
+                        <button class="liquid-btn px-6 py-2 rounded-lg font-bold text-sm w-full">Download JPG</button>
+                    </a>
+                </div>
+            `;
+        }
+    } catch (err) {
+        detectedDiv.innerHTML = "<span class='text-red-400'>Server Error! Render URL එක හරිදැයි බලා නැවත උත්සාහ කරන්න.</span>";
+    } finally {
+        detectBtn.innerText = "Download";
+        detectBtn.disabled = false;
+    }
+});
+
+document.querySelectorAll(".mediaTab").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+        if(btn.disabled) return;
+        document.querySelectorAll(".mediaTab").forEach(b=>{
+            b.classList.remove("tab-active");
+            b.classList.add("glass");
+        });
+        btn.classList.add("tab-active");
+        document.querySelectorAll(".tabContent").forEach(t=>t.classList.add("hidden"));
+        document.getElementById(btn.dataset.tab).classList.remove("hidden");
+    });
+});
+</script>
+</body>
+</html>
